@@ -2,14 +2,6 @@
 # tasks file for ansible-role-sshd-host-keys
 #
 
-- name: get_url the known_hosts files to /etc/ssh/
-  get_url: url={{ known_hosts_url }}/{{ item }} dest=/etc/ssh/{{ item }} owner=root group=root mode=0644 backup=no
-  with_items: ssh_known_host_files
+- include: copy.yml
+  when: install_ssh_host_keys
 
-- name: fetch the host keys from the shared FS and install into /etc/ssh/
-  fetch: src={{ ssh_host_keys_dir }}/{{ ansible_hostname }}/{{ item }} dest=/etc/ssh/{{ item }} owner=root group=ssh_keys mode=0640 backup=no
-  with_items: ssh_known_host_files
-
-- name: fetch the pub host keys from the shared FS and install into /etc/ssh/
-  fetch: src={{ ssh_host_keys_dir }}/{{ ansible_hostname }}/{{ item }}.pub dest=/etc/ssh/{{ item }} owner=root group=root mode=0644 backup=no
-  with_items: ssh_known_host_files
