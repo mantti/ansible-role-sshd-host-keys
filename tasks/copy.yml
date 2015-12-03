@@ -38,6 +38,7 @@
 #    dest=/etc/ssh/{{ item }} 
 #    archive=True
 #  with_items: ssh_host_key_files
+#  delegate_to: {{ inventory_hostname }}
 
 - name: fetch the host keys from the shared FS and install into /etc/ssh/
   fetch: >
@@ -45,10 +46,7 @@
     dest="/etc/ssh/"
     owner=root group=ssh_keys mode=0640 backup=no 
     validate_checksum=yes fail_on_missing=yes
+    flat=yes
   with_nested: 
    - ssh_host_key_files
    - [ "", ".pub" ]
-
-- name: fetch the pub host keys from the shared FS and install into /etc/ssh/
-  fetch: src={{ ssh_host_keys_dir }}/{{ ansible_hostname }}/ssh/{{ item }}.pub dest=/etc/ssh/ owner=root group=root mode=0644 backup=no validate_checksum=yes fail_on_missing=yes
-  with_items: ssh_host_key_files
