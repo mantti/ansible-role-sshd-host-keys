@@ -6,6 +6,26 @@
   get_url: url={{ known_hosts_url }}/{{ item }} dest=/etc/ssh/{{ item }} owner=root group=root mode=0644 backup=no
   with_items: ssh_known_host_files
 
+# fetch/copy doesn't work if src/dest are on the same host
+#
+- name: grab checksums of the installed ssh host keys
+  stat: path=/etc/ssh/{{ item[0] }}{{ item[1] }} get_checksum=True
+  with_nested: 
+   - ssh_known_host_files
+   - [ "", ".pub" ]
+  register: ssh_host_keys_checksum
+
+- debug: var=ssh_host_keys_checksum
+
+- name: grab checksums of the ssh host keys on the shared fs
+  stat: path={{ ssh_host_keys_dir }}/{{ ansible_hostname }}/ssh/{{ item[0] }}{{ item[1] }} get_checksum=True
+  with_nested: 
+   - ssh_known_host_files
+   - [ "", ".pub" ]
+  register: ssh_host_keys_checksum_nfs
+
+- debug: var=ssh_host_keys_checksum_nfs
+
 - name: fetch the host keys from the shared FS and install into /etc/ssh/
   fetch: src={{ ssh_host_keys_dir }}/{{ ansible_hostname }}/ssh/{{ item }} dest=/etc/ssh/{{ item }} owner=root group=ssh_keys mode=0640 backup=no validate_checksum=yes fail_on_missing=yes
   with_items: ssh_known_host_files
