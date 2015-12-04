@@ -5,3 +5,4 @@
 - include: copy.yml
   when: install_ssh_host_keys
 
+- include: known.yml
