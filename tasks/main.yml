@@ -2,6 +2,11 @@
 # tasks file for ansible-role-sshd-host-keys
 #
 
+- include: ssh_host_keys_copy.yml
+  tags: ssh_host_keys
+  sudo: True
+  when: install_ssh_host_keys
+
 - include: copy.yml
   when: install_ssh_host_keys
 
