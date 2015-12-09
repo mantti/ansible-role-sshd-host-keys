@@ -5,4 +5,3 @@
 - name: get_url the known_hosts files to /etc/ssh/
   get_url: url={{ known_hosts_url }}/{{ item }} dest=/etc/ssh/{{ item }} owner=root group=root mode=0644 backup=no force=yes
   with_items: ssh_known_host_files
-  when: install_ssh_known_hosts

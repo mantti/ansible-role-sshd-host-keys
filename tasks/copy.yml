@@ -2,30 +2,6 @@
 # tasks file for ansible-role-sshd-host-keys
 #
 
-## Debug things:
-#- name: grab checksums of the installed ssh host keys
-#  stat: path="/etc/ssh/{{ item[0] }}{{ item[1] }}" get_checksum=True
-#  with_nested: 
-#   - ssh_host_key_files
-#   - [ "", ".pub" ]
-#  register: ssh_host_keys_checksum
-#  when: install_ssh_host_keys
-
-#- debug: var=ssh_host_keys_checksum
-#  when: install_ssh_host_keys
-
-#- name: grab checksums of the ssh host keys on the shared fs
-#  stat: >
-#    path="{{ ssh_host_keys_dir }}/{{ ansible_hostname }}/ssh/{{ item[0] }}{{ item[1] }}" 
-#    get_checksum=True
-#  with_nested: 
-#   - ssh_host_key_files
-#   - [ "", ".pub" ]
-#  register: ssh_host_keys_checksum_nfs
-#  when: install_ssh_host_keys
-
-#- debug: var=ssh_host_keys_checksum_nfs
-
 - name: fetch the host keys from the shared FS and install into /etc/ssh/
   fetch: >
     src="{{ ssh_host_keys_dir }}/{{ ansible_hostname }}/ssh/{{ item[0] }}{{ item[1] }}"
@@ -36,4 +12,3 @@
   with_nested: 
    - ssh_host_key_files
    - [ "", ".pub" ]
-  when: install_ssh_host_keys

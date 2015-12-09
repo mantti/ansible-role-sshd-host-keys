@@ -15,9 +15,11 @@
 - include: ssh_host_keys_copy.yml
   tags: ssh_host_keys
   sudo: True
-  when: install_ssh_host_keys
+  when: install_ssh_host_keys_to_nfs
 
 - include: copy.yml
-  when: install_ssh_host_keys
+  when: install_ssh_host_keys_from_nfs
 
 - include: known.yml
+  when: install_ssh_known_hosts_from_http
+
