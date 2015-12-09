@@ -1,2 +1,7 @@
 ---
 # handlers file for ansible-role-sshd-host-keys
+
+- name: reload sshd
+  service:
+    name: sshd
+    state: reloaded
