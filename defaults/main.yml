@@ -4,6 +4,12 @@
 kickstart_server_ip: "10.1.1.2"
 known_hosts_url: "http://{{ kickstart_server_ip }}/known_hosts"
 
+# setting generate_ssh_host_keys to True generates sshd host keys
+generate_ssh_host_keys: False
+
+# setting generate_ssh_known_hosts to True generates known hosts files
+generate_ssh_known_hosts: False
+
 install_ssh_host_keys: True
 install_ssh_known_hosts: True
 
@@ -18,3 +24,4 @@ ssh_known_host_files:
  - ssh_ed25519_known_hosts
  
 ssh_host_keys_dir: "/home/admin/nodes"
+ssh_known_hosts_dir: "/var/www/html/known_hosts"

@@ -3,7 +3,7 @@
 #Remote
 - name: create SSH host key directory in /home/ - assumes a shared /home directory
   file: "path={{ ssh_host_keys_dir }}/{{ item }}/ssh/ state=directory mode=0750 owner=root group=admin"
-  with_items: groups.pxe_bootable_nodes
+  with_items: groups.compute
 
 - name: create SSH known_hosts directory in /var/www/html
   file: "path={{ ssh_known_hosts_dir }} state=directory mode=0755 owner=apache group=apache"
@@ -21,11 +21,11 @@
 - name: copy the host keys to the install node ssh_host_keys_location
   copy: src=files/nodes/{{ item[0] }}/ssh/{{ item[1] }} dest={{ ssh_host_keys_dir }}/{{ item[0] }}/ssh/{{ item[1] }} owner=root group=admin mode=0640 backup=yes
   with_nested: 
-   - groups.pxe_bootable_nodes
+   - groups.compute
    - ssh_host_key_files
 
 - name: copy the host pub keys to the install node ssh_known_hosts_location
   copy: src=files/nodes/{{ item[0] }}/ssh/{{ item[1] }}.pub dest={{ ssh_host_keys_dir }}/{{ item[0] }}/ssh/{{ item[1] }}.pub owner=root group=admin mode=0640 backup=yes
   with_nested: 
-   - groups.pxe_bootable_nodes
+   - groups.compute
    - ssh_host_key_files
