@@ -6,7 +6,7 @@
   with_items: groups.compute
 
 - name: create SSH known_hosts directory in /var/www/html
-  file: "path={{ ssh_known_hosts_dir }} state=directory mode=0755 owner=apache group=apache"
+  file: "path={{ ssh_known_hosts_dir }} state=directory mode=0755"
 
 ##
 
@@ -15,7 +15,7 @@
   with_items: ssh_known_host_files
 
 - name: copy the known_hosts files to the shared directory ssh_known_hosts_dir www
-  copy: src=files/nodes/{{ item }} dest={{ ssh_known_hosts_dir }}/{{ item }} owner=apache group=apache mode=0644 backup=yes
+  copy: src=files/nodes/{{ item }} dest={{ ssh_known_hosts_dir }}/{{ item }} mode=0644 backup=yes
   with_items: ssh_known_host_files
 
 - name: copy the host keys to the install node ssh_host_keys_location
