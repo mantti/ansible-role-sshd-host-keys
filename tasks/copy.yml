@@ -1,7 +1,7 @@
 ---
 # tasks file for ansible-role-sshd-host-keys
 #
-
+# This fetch command will not work if running in ansible push mode - because it will try to fetch the file from the compute node to where ansible runs.
 - name: fetch the host keys from the shared FS and install into /etc/ssh/
   fetch: >
     src="{{ ssh_host_keys_dir }}/{{ ansible_hostname }}/ssh/{{ item[0] }}{{ item[1] }}"
@@ -14,3 +14,4 @@
    - [ "", ".pub" ]
   notify:
    - reload sshd
+  when: running_as_ansible_pull

@@ -12,7 +12,12 @@ generate_ssh_known_hosts: False
 
 install_ssh_known_hosts_from_http: False
 install_ssh_host_keys_to_nfs: False
+##
 install_ssh_host_keys_from_nfs: False
+# This should be set to true only in the play.
+# This to detect if this play is running in an ansible-pull
+running_as_ansible_pull: False
+##
 
 ssh_host_key_files:
  - ssh_host_rsa_key
