@@ -1,36 +1,42 @@
 ---
 
 #Remote
-- name: create SSH host key directory in /home/ - assumes a shared /home directory
+- name: create SSH host key directory in ssh_host_keys_dir - assumes a shared directory
   file: "path={{ ssh_host_keys_dir }}/{{ item }}/ssh/ state=directory mode=0750 owner=root group=admin"
   with_items: groups.compute
   when: generate_ssh_known_hosts
 
-- name: create SSH known_hosts directory in /var/www/html
+- name: Ensure that the SSH known_hosts directory exists
   file: "path={{ ssh_known_hosts_dir }} state=directory mode=0755"
   when: generate_ssh_known_hosts
 
 ##
 
 - name: copy the known_hosts files to the install node /etc/ssh/
-  copy: src=files/nodes/{{ item }} dest=/etc/ssh/{{ item }} owner=root group=root mode=0644 backup=yes
-  with_items: ssh_known_host_files
+  copy: src=files/nodes/ssh_known_hosts 
+        dest=/etc/ssh/ssh_known_hosts 
+        owner=root group=root mode=0644 backup=yes
   when: generate_ssh_known_hosts
 
-- name: copy the known_hosts files to the shared directory ssh_known_hosts_dir www
-  copy: src=files/nodes/{{ item }} dest={{ ssh_known_hosts_dir }}/{{ item }} mode=0644 backup=yes
-  with_items: ssh_known_host_files
+- name: copy the known_hosts file to the shared directory ssh_known_hosts_dir www
+  copy: src=files/nodes/ssh_known_hosts
+        dest={{ ssh_known_hosts_dir }}/ssh_known_hosts
+        mode=0644 backup=yes
   when: generate_ssh_known_hosts
 
-- name: copy the host keys to the install node ssh_host_keys_location
-  copy: src=files/nodes/{{ item[0] }}/ssh/{{ item[1] }} dest={{ ssh_host_keys_dir }}/{{ item[0] }}/ssh/{{ item[1] }} owner=root group=admin mode=0640 backup=yes
+- name: copy the host keys to the install node ssh_host_keys_dir
+  copy: src=files/nodes/{{ item[0] }}/ssh/{{ item[1] }} 
+        dest={{ ssh_host_keys_dir }}/{{ item[0] }}/ssh/{{ item[1] }} 
+        owner=root group=admin mode=0640 backup=yes
   with_nested: 
    - groups.compute
    - ssh_host_key_files
   when: generate_ssh_known_hosts
 
-- name: copy the host pub keys to the install node ssh_known_hosts_location
-  copy: src=files/nodes/{{ item[0] }}/ssh/{{ item[1] }}.pub dest={{ ssh_host_keys_dir }}/{{ item[0] }}/ssh/{{ item[1] }}.pub owner=root group=admin mode=0640 backup=yes
+- name: copy the host pub keys to the install node ssh_hosts_keys_dir
+  copy: src=files/nodes/{{ item[0] }}/ssh/{{ item[1] }}.pub 
+        dest={{ ssh_host_keys_dir }}/{{ item[0] }}/ssh/{{ item[1] }}.pub 
+        owner=root group=admin mode=0640 backup=yes
   with_nested: 
    - groups.compute
    - ssh_host_key_files
