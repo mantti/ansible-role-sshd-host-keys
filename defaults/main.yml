@@ -2,12 +2,12 @@
 # defaults file for ansible-role-sshd-host-keys
 
 kickstart_server_ip: "10.1.1.2"
-known_hosts_url: "http://{{ kickstart_server_ip }}/known_hosts"
+known_hosts_url: "http://{{ kickstart_server_ip }}/ssh_known_hosts"
 
 # setting generate_ssh_host_keys to True generates sshd host keys
 generate_ssh_host_keys: False
 
-# setting generate_ssh_known_hosts to True generates known hosts files
+# setting generate_ssh_known_hosts to True generates the known hosts file
 generate_ssh_known_hosts: False
 
 install_ssh_known_hosts_from_http: False
@@ -24,10 +24,5 @@ ssh_host_key_files:
  - ssh_host_ecdsa_key
  - ssh_host_ed25519_key
 
-ssh_known_host_files:
- - ssh_rsa_known_hosts
- - ssh_ecdsa_known_hosts
- - ssh_ed25519_known_hosts
- 
 ssh_host_keys_dir: "/home/admin/nodes"
-ssh_known_hosts_dir: "/var/www/html/known_hosts"
+ssh_known_hosts_dir: "/var/www/html"
