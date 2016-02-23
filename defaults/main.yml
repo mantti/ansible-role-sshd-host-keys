@@ -20,8 +20,6 @@ running_as_ansible_pull: False
 ##
 
 ssh_host_key_files:
- - ssh_host_rsa_key
- - ssh_host_ecdsa_key
  - ssh_host_ed25519_key
 
 ssh_host_keys_dir: "/home/admin/nodes"
