@@ -38,3 +38,7 @@ MIT
 
 Author Information
 ------------------
+
+https://github.com/martbhell
+https://github.com/jabl
+
