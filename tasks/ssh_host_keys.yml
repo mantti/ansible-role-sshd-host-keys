@@ -5,9 +5,9 @@
 - name: create SSH host key directory in files/nodes/nodename/ssh
   file: "path=files/nodes/{{ item }}/ssh state=directory recurse=yes"
   delegate_to: localhost
-  with_items: groups.compute
+  with_items: "{{ groups.compute }}"
 
 - name: generate SSH ed25519 host keys for the nodes
   command: /usr/bin/ssh-keygen -t ed25519 -f files/nodes/{{ item }}/ssh/ssh_host_ed25519_key -N "" -C "" creates=files/nodes/{{ item }}/ssh/ssh_host_ed25519_key.pub
   delegate_to: localhost
-  with_items: groups.compute
+  with_items: "{{ groups.compute }}"

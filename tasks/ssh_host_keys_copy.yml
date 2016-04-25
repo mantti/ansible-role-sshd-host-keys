@@ -3,7 +3,7 @@
 #Remote
 - name: create SSH host key directory in ssh_host_keys_dir - assumes a shared directory
   file: "path={{ ssh_host_keys_dir }}/{{ item }}/ssh/ state=directory mode=0750 owner=root group=admin"
-  with_items: groups.compute
+  with_items: "{{ groups.compute }}"
   when: generate_ssh_known_hosts
 
 - name: Ensure that the SSH known_hosts directory exists
@@ -29,8 +29,8 @@
         dest={{ ssh_host_keys_dir }}/{{ item[0] }}/ssh/{{ item[1] }} 
         owner=root group=admin mode=0640 backup=yes
   with_nested: 
-   - groups.compute
-   - ssh_host_key_files
+   - "{{ groups.compute }}"
+   - "{{ ssh_host_key_files }}"
   when: generate_ssh_known_hosts
 
 - name: copy the host pub keys to the install node ssh_hosts_keys_dir
@@ -38,6 +38,6 @@
         dest={{ ssh_host_keys_dir }}/{{ item[0] }}/ssh/{{ item[1] }}.pub 
         owner=root group=admin mode=0640 backup=yes
   with_nested: 
-   - groups.compute
-   - ssh_host_key_files
+   - "{{ groups.compute }}"
+   - "{{ ssh_host_key_files }}"
   when: generate_ssh_known_hosts
