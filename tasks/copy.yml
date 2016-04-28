@@ -10,7 +10,7 @@
     validate_checksum=yes fail_on_missing=yes
     flat=yes
   with_nested: 
-   - ssh_host_key_files
+   - "{{ ssh_host_key_files }}"
    - [ "", ".pub" ]
   notify:
    - reload sshd
