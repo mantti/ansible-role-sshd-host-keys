@@ -19,4 +19,4 @@
                name='{{ hostvars[item].ib_ip_addr }}'
                key="{{ hostvars[item].ib_ip_addr }} {{ lookup('file', 'files/nodes/' + item + '/ssh/ssh_host_ed25519_key.pub') }}"
   delegate_to: localhost
-  with_items: "{{ groups.compute }}"
+  with_items: "{{ groups.compute }}"
